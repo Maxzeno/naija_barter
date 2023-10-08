@@ -91,7 +91,7 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
 
         user = self.__class__.objects.filter(id=self.id).first()
         if not user or user and user.password != self.password:
-            if len(self.password) < 8 or validate_alphanumeric_password(self.password):
+            if len(self.password) < 8 or not validate_alphanumeric_password(self.password):
                 raise ValidationError(
                     'Password most be alpha numeric and greater than 8 characters')
             self.set_password(self.password)

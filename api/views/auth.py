@@ -1,6 +1,6 @@
 from django.contrib.auth import password_validation
 from django.core.exceptions import ValidationError
-
+from django.shortcuts import get_object_or_404
 from rest_framework import generics, status, mixins, views
 from rest_framework.response import Response
 from django.contrib.auth import get_user_model
@@ -18,7 +18,7 @@ from rest_framework_simplejwt.views import (
 )
 from api import serializers
 from api.serializers.auth import ChangePasswordSerializer
-from api.serializers.core import CreatorSerializer
+from api.serializers.core import UserSerializer
 from api.utils.custom_status_code import HTTP_450_EMAIL_NOT_CONFIRMED
 
 
@@ -39,7 +39,7 @@ class UpdateOnlyAPIView(mixins.UpdateModelMixin,
         return self.update(request, *args, **kwargs)
 
 
-@extend_schema(tags=['Auth'], responses=serializers.CreatorSerializer)
+@extend_schema(tags=['Auth'], responses=serializers.UserAndTokenSerializer)
 class MyTokenObtainPairView(TokenObtainPairView):
     def post(self, request, *args, **kwargs):
         email = request.data.get('email', '').strip()
@@ -56,7 +56,7 @@ class MyTokenObtainPairView(TokenObtainPairView):
         if access_token is None:
             raise InvalidToken()
 
-        user_serializer = CreatorSerializer(user)
+        user_serializer = UserSerializer(user)
         data = user_serializer.data
 
         if not user.email_confirmed:

@@ -6,7 +6,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.User
         exclude = (
-            'groups', 'user_permissions', 'last_login'
+            'groups', 'user_permissions', 'last_login', 'password', 'otp', 'otp_expiry_date', 'otp_tries'
             )
         
         extra_kwargs = {
@@ -24,9 +24,19 @@ class UserSerializerCreate(serializers.ModelSerializer):
     class Meta:
         model = models.User
         exclude = (
-            'groups', 'user_permissions', 'last_login', 'created_at', 'updated_at',
-            'is_active', 'is_suspended', 'is_staff', 'email_confirmed', 'is_superuser'
+            'groups', 'user_permissions', 'last_login', 'otp', 'otp_expiry_date', 'otp_tries'
             )
+        
+        extra_kwargs = {
+            'password': {'write_only': True},
+            'email_confirmed': {'read_only': True},
+            'is_staff': {'read_only': True},
+            'is_suspended': {'read_only': True},
+            'is_superuser': {'read_only': True},
+            'is_active': {'read_only': True},
+            'created_at': {'read_only': True},
+            'updated_at': {'read_only': True},
+        }
 
 
 class UserAndTokenSerializer(UserSerializer):
@@ -37,16 +47,32 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Product
         fields = '__all__'
+        
+        extra_kwargs = {
+            'is_active': {'read_only': True},
+            'created_at': {'read_only': True},
+            'updated_at': {'read_only': True},
+        }
 
 
 class LocationSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Location
         fields = '__all__'
+        
+        extra_kwargs = {
+            'created_at': {'read_only': True},
+            'updated_at': {'read_only': True},
+        }
 
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Category
-        exclude = '__all__'
+        fields = '__all__'
+        
+        extra_kwargs = {
+            'created_at': {'read_only': True},
+            'updated_at': {'read_only': True},
+        }
 
