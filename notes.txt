@@ -1,0 +1,4 @@
+* Need to add notifications
+* Need to add Flash sale
+* Need to add Hot deal
+* Need to add chat and messages

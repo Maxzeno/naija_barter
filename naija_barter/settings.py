@@ -212,14 +212,14 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-AUTH_USER_MODEL = 'api.Creator'
+AUTH_USER_MODEL = 'api.User'
 
-###DEVELOPMENT
+### DEVELOPMENT
 if TRY_LOCAL_EMAIL:
     EMAIL_HOST = 'localhost'
     EMAIL_PORT = '1025'
 
-###PRODUCTION
+### PRODUCTION
 else:
     EMAIL_HOST = config('EMAIL_HOST', 'smtp.gmail.com')
     EMAIL_HOST_USER = config('EMAIL_HOST_USER')
